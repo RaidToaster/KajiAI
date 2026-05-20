@@ -1,0 +1,63 @@
+decompose_task:
+  description: >
+    Decompose the user's claim into atomic, independently verifiable
+    sub-claims. For each sub-claim, identify the key factual assertions
+    that need evidence. Domain: {domain}. Claim: {claim}
+  expected_output: >
+    A list of atomic claim strings, each representing one distinct
+    factual assertion that can be verified independently.
+  agent: lead_researcher
+
+research_task:
+  description: >
+    For each atomic claim, conduct broad evidence gathering using
+    available search tools. Prioritise recent, authoritative sources.
+    Return raw search snippets with URLs. Do not interpret — just collect.
+    Domain: {domain}. Claims: {claims}
+  expected_output: >
+    A structured collection of search results per atomic claim, each
+    with snippet text and source URL.
+  agent: lead_researcher
+
+fact_check_task:
+  description: >
+    Verify each atomic claim against the gathered evidence. Compare
+    sources, detect inconsistencies, and assign a preliminary verdict
+    to each claim. Evidence: {evidence}
+  expected_output: >
+    Per-claim analysis with supporting sources, contradicting sources,
+    and a preliminary verdict label.
+  agent: fact_checker
+
+source_analysis_task:
+  description: >
+    Evaluate credibility, bias, and transparency for each source in
+    the evidence set. Do not conflate these dimensions. Produces a
+    SourceAssessment per source. Sources: {sources}
+  expected_output: >
+    A SourceAssessment object per source with credibility_score,
+    bias_score, evidence_quality, factual_alignment, transparency_score.
+  agent: source_analyst
+
+contradiction_task:
+  description: >
+    Scan all evidence for internal contradictions, inconsistent claims
+    across sources, and unresolved disputes. Determine if conflicts
+    can be resolved or require escalation. Evidence: {evidence}
+  expected_output: >
+    List of contradictions found, their severity, and recommended
+    escalation verdict if unresolvable.
+  agent: contradiction_analyst
+
+synthesis_task:
+  description: >
+    Generate the final structured report. Include verdict badge,
+    confidence score, plain-language summary, evidence chain,
+    supporting sources, contradicting sources, source notes, and
+    AI disclaimer. Never invent evidence. All claims must trace to
+    retrieved evidence. Verdicts: {verdicts}, Sources: {assessments},
+    Contradictions: {contradictions}
+  expected_output: >
+    A complete markdown report following the standard response
+    structure with all sections populated from actual evidence.
+  agent: synthesis_writer

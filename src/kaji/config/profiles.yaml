@@ -1,0 +1,65 @@
+scientific:
+  prompt_profile: scientific
+  tools:
+    - tavily
+    - arxiv
+    - serper
+  verification_mode: strict
+  evidence_threshold: high
+  contradiction_sensitivity: medium
+  agents:
+    - lead_researcher
+    - fact_checker
+    - source_analyst
+    - contradiction_analyst
+    - synthesis_writer
+
+political:
+  prompt_profile: political
+  tools:
+    - tavily
+    - serper
+    - firecrawl
+    - brave
+  verification_mode: balanced
+  evidence_threshold: medium
+  contradiction_sensitivity: high
+  agents:
+    - lead_researcher
+    - fact_checker
+    - source_analyst
+    - contradiction_analyst
+    - synthesis_writer
+
+health_medical:
+  prompt_profile: health_medical
+  tools:
+    - tavily
+    - arxiv
+    - serper
+  verification_mode: strict
+  evidence_threshold: high
+  contradiction_sensitivity: medium
+  require_peer_reviewed: true
+  agents:
+    - lead_researcher
+    - fact_checker
+    - source_analyst
+    - contradiction_analyst
+    - synthesis_writer
+
+general:
+  prompt_profile: general
+  tools:
+    - tavily
+    - serper
+    - firecrawl
+  verification_mode: normal
+  evidence_threshold: medium
+  contradiction_sensitivity: medium
+  agents:
+    - lead_researcher
+    - fact_checker
+    - source_analyst
+    - contradiction_analyst
+    - synthesis_writer

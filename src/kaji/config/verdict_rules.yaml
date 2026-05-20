@@ -1,0 +1,50 @@
+# Verdict labels and mapping rules
+
+labels:
+  TRUE:
+    description: Claim is supported by credible evidence
+    requires_cross_reference: true
+    min_sources: 2
+
+  MOSTLY_TRUE:
+    description: Claim is largely accurate but missing minor context
+    requires_cross_reference: true
+    min_sources: 2
+
+  MISLEADING:
+    description: Claim contains accurate elements used to imply false conclusions
+    requires_contradiction_check: true
+
+  FALSE:
+    description: Claim is contradicted by credible evidence
+    requires_contradiction_check: true
+    min_contradicting_sources: 2
+
+  UNVERIFIED:
+    description: Insufficient evidence exists to evaluate the claim
+    trigger: no_evidence_found
+
+  NEEDS_CONTEXT:
+    description: Claim is partially true but omission changes meaning
+    trigger: unresolvable_contradiction
+
+  NEEDS_MANUAL_VERIFICATION:
+    description: Evidence is too complex or contradictory for automated verdict
+    trigger: epistemic_stalemate
+
+  SATIRE:
+    description: Claim originates from a known satire or parody source
+    requires_source_check: true
+
+# Conflict resolution protocol
+consensus_conflict:
+  when:
+    - equally_credible_sources_conflict
+    - evidence_remains_unresolved
+  action: escalate_verdict
+  possible_labels:
+    - NEEDS_CONTEXT
+    - UNVERIFIED
+    - NEEDS_MANUAL_VERIFICATION
+  prohibits:
+    - averaging_confidence

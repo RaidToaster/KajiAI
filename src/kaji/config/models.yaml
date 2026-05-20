@@ -1,0 +1,32 @@
+# LLM provider configuration
+# Shared abstraction — swapping providers = config change only
+
+default:
+  provider: openai
+  model: gpt-4o
+  temperature: 0.3
+  max_tokens: 4000
+
+openai:
+  provider: openai
+  model: gpt-4o
+  temperature: 0.3
+  max_tokens: 4000
+
+openai_mini:
+  provider: openai
+  model: gpt-4o-mini
+  temperature: 0.3
+  max_tokens: 4000
+
+anthropic:
+  provider: anthropic
+  model: claude-sonnet-4-20250514
+  temperature: 0.3
+  max_tokens: 4000
+
+ollama:
+  provider: ollama
+  model: llama3
+  temperature: 0.3
+  max_tokens: 4000
