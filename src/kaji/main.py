@@ -5,22 +5,31 @@ import warnings
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
-from kaji.flow import KajiFlow
+from crewai import Agent, LLM
 
 
 def run():
-    inputs = {
-        "claim": "The moon landing was faked.",
-        "domain": "general",
-    }
-    result = KajiFlow().kickoff(inputs=inputs)
-    if hasattr(result, "raw"):
-        print(result.raw)
-    else:
-        print(result)
+    llm = LLM(
+        model="ollama/gemma4",
+        base_url="http://localhost:11434",
+    )
+    agent = Agent(
+        role="Connectivity Tester",
+        goal="Respond to the user's message to confirm the LLM connection works.",
+        backstory="You are a helpful assistant that gives short, direct answers.",
+        llm=llm,
+        verbose=True,
+    )
+    result = agent.kickoff(
+        "Respond with exactly: 'Ollama OK. Model: gemma4' followed by a one-sentence greeting."
+    )
+    print("\n--- RESULT ---")
+    print(result.raw)
+    print("--- END ---")
 
 
 def run_with_inputs(claim: str, domain: str = "general"):
+    from kaji.flow import KajiFlow
     flow = KajiFlow()
     result = flow.kickoff(inputs={"claim": claim, "domain": domain})
     return result
@@ -60,14 +69,15 @@ def test():
 
 def run_with_trigger():
     if len(sys.argv) < 2:
-        raise Exception("No trigger payload provided. Please provide JSON payload as argument.")
+        raise Exception("No trigger payload provided.")
     try:
         trigger_payload = json.loads(sys.argv[1])
     except json.JSONDecodeError:
-        raise Exception("Invalid JSON payload provided as argument")
+        raise Exception("Invalid JSON payload")
 
     claim = trigger_payload.get("claim", "")
     domain = trigger_payload.get("domain", "general")
 
+    from kaji.flow import KajiFlow
     result = KajiFlow().kickoff(inputs={"claim": claim, "domain": domain})
     return result

@@ -2,8 +2,8 @@
 # Shared abstraction — swapping providers = config change only
 
 default:
-  provider: openai
-  model: gpt-4o
+  provider: ollama
+  model: gemma-4
   temperature: 0.3
   max_tokens: 4000
 
@@ -27,6 +27,7 @@ anthropic:
 
 ollama:
   provider: ollama
-  model: llama3
+  model: gemma4
+  base_url: http://localhost:11434
   temperature: 0.3
   max_tokens: 4000

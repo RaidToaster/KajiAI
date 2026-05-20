@@ -4,6 +4,7 @@ from typing import Any
 
 from kaji.crews.profile_loader import ProfileLoader
 from kaji.crews.execution_context import ExecutionContext
+from kaji.models.provider import create_llm
 
 
 class BaseVerificationCrew:
@@ -27,7 +28,7 @@ class BaseVerificationCrew:
             backstory=config["backstory"],
             tools=agent_tools,
             verbose=True,
-            llm=f"{llm_config['provider']}/{llm_config['model']}",
+            llm=create_llm(llm_config),
         )
 
     def _build_task(self, task_key: str, agent: BaseAgent) -> Task:
