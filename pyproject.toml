@@ -10,6 +10,7 @@ dependencies = [
     "fastapi>=0.115.0",
     "gradio>=5.0.0",
     "uvicorn>=0.30.0",
+    "ddgs>=9.14.4",
 ]
 
 [project.optional-dependencies]
@@ -20,6 +21,7 @@ dev = [
 
 [project.scripts]
 kaji = "kaji.main:run"
+kaji-demo = "kaji.main:demo"
 run_crew = "kaji.main:run"
 train = "kaji.main:train"
 replay = "kaji.main:replay"

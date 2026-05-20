@@ -5,27 +5,41 @@ import warnings
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
-from crewai import Agent, LLM
+from kaji.crews.fact_check_crew import run as fact_check
 
 
 def run():
-    llm = LLM(
-        model="ollama/gemma4",
-        base_url="http://localhost:11434",
-    )
-    agent = Agent(
-        role="Connectivity Tester",
-        goal="Respond to the user's message to confirm the LLM connection works.",
-        backstory="You are a helpful assistant that gives short, direct answers.",
-        llm=llm,
-        verbose=True,
-    )
-    result = agent.kickoff(
-        "Respond with exactly: 'Ollama OK. Model: gemma4' followed by a one-sentence greeting."
-    )
-    print("\n--- RESULT ---")
-    print(result.raw)
-    print("--- END ---")
+    import sys
+
+    if len(sys.argv) > 1:
+        claim = " ".join(sys.argv[1:])
+    else:
+        claim = input("Enter a claim to fact-check: ").strip()
+
+    if not claim:
+        print("No claim entered. Exiting.")
+        return
+
+    print(f"\n{'='*60}")
+    print(f"  KajiSF-DJ Fact Check")
+    print(f"{'='*60}")
+    print(f"  Claim: {claim}")
+    print(f"{'='*60}\n")
+
+    result = fact_check(claim)
+
+    print(f"\n{'='*60}")
+    print("  RESULT")
+    print(f"{'='*60}")
+    print(result)
+    print(f"{'='*60}")
+
+
+def demo():
+    claim = "Vaccines cause autism"
+    print(f"Running demo with claim: {claim}\n")
+    result = fact_check(claim)
+    print(result)
 
 
 def run_with_inputs(claim: str, domain: str = "general"):
